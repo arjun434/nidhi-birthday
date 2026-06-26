@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Nidhi 🎂❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink-deep:   #c2185b;
+    --pink-main:   #e91e8c;
+    --pink-soft:   #f48fb1;
+    --pink-pale:   #fce4ec;
+    --pink-blush:  #fff0f5;
+    --rose-dark:   #880e4f;
+    --gold:        #f8bbd0;
+    --white:       #ffffff;
+    --text-dark:   #3d0c21;
+    --text-mid:    #6d2244;
+    --serif:       'Playfair Display', Georgia, serif;
+    --sans:        'Lato', Arial, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--pink-blush);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    line-height: 1.7;
+  }
+
+  /* ——— PAGES ——— */
+  .page {
+    display: none;
+    min-height: 100vh;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .page.active { display: flex; flex-direction: column; }
+
+  /* ——— FLOATING PARTICLES ——— */
+  .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.18;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(110vh) scale(0.5) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.18; }
+    90%  { opacity: 0.1; }
+    100% { transform: translateY(-10vh) scale(1) rotate(360deg); opacity: 0; }
+  }
+
+  /* ——— INTRO COUNTDOWN OVERLAY ——— */
+  #intro-overlay {
+    position: fixed; inset: 0; z-index: 9000;
+    background: #0d0108;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  #intro-overlay.hidden { display: none; }
+
+  /* ripple rings behind number */
+  .intro-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(233,30,140,0.25);
+    animation: ringPulse 1s ease-out infinite;
+    pointer-events: none;
+  }
+  @keyframes ringPulse {
+    0%   { transform: scale(0.6); opacity: 0.6; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+
+  /* the big countdown number */
+  #countdown-num {
+    font-family: var(--serif);
+    font-size: clamp(7rem, 28vw, 12rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    position: relative; z-index: 2;
+    will-change: transform, opacity;
+  }
+  #countdown-num.slam {
+    animation: numSlam 0.55s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  @keyframes numSlam {
+    0%   { transform: scale(2.5); opacity: 0; filter: blur(8px); }
+    60%  { transform: scale(0.95); opacity: 1; filter: blur(0); }
+    80%  { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  #countdown-num.exit {
+    animation: numExit 0.3s ease-in both;
+  }
+  @keyframes numExit {
+    0%   { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.3); opacity: 0; }
+  }
+
+  /* small "get ready" text */
+  #intro-label {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(244,143,177,0.55);
+    margin-top: 1.2rem;
+    position: relative; z-index: 2;
+  }
+
+  /* dot progress indicators */
+  #intro-dots {
+    display: flex; gap: 8px; margin-top: 2.5rem;
+    position: relative; z-index: 2;
+  }
+  .intro-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(244,143,177,0.2);
+    transition: background 0.3s;
+  }
+  .intro-dot.active { background: var(--pink-main); }
+  .intro-dot.done   { background: rgba(244,143,177,0.5); }
+
+  /* WISH SCREEN — shown after countdown */
+  #wish-screen {
+    position: fixed; inset: 0; z-index: 8500;
+    background: linear-gradient(160deg, #1a0310 0%, #3d0c21 50%, #6d1a3a 100%);
+    display: none;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    overflow: hidden;
+  }
+  #wish-screen.show { display: flex; }
+
+  #wish-cake {
+    font-size: clamp(4rem, 18vw, 7rem);
+    line-height: 1;
+    margin-bottom: 1rem;
+    animation: cakeBounce 0.7s cubic-bezier(0.34,1.56,0.64,1) both;
+    animation-delay: 0.1s;
+  }
+  @keyframes cakeBounce {
+    0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  #wish-hb {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 10vw, 4rem);
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: wishLand 0.8s cubic-bezier(0.22,1,0.36,1) 0.5s both;
+  }
+  #wish-name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(2.8rem, 12vw, 5rem);
+    color: var(--pink-soft);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: wishLand 0.8s cubic-bezier(0.22,1,0.36,1) 0.85s both;
+  }
+  @keyframes wishLand {
+    0%   { opacity: 0; transform: translateY(30px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  #wish-sub {
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    letter-spacing: 0.12em;
+    color: rgba(244,143,177,0.6);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: wishLand 0.6s ease 1.3s both;
+  }
+
+  #wish-enter-btn {
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: wishLand 0.6s ease 1.8s both;
+  }
+
+  /* confetti hearts for wish screen */
+  .confetti-heart {
+    position: absolute;
+    font-size: clamp(1rem, 4vw, 1.8rem);
+    pointer-events: none;
+    animation: confettiFall linear both;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translateY(-60px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ——— PAGE 1: GATE ——— */
+  #page1 {
+    background: linear-gradient(160deg, #fce4ec 0%, #f8bbd0 40%, #e91e8c22 100%);
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+  .gate-inner { position: relative; z-index: 2; max-width: 480px; width: 100%; }
+
+  .couple-photo-wrap {
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 1.8rem;
+    border: 5px solid var(--pink-soft);
+    box-shadow: 0 0 0 8px #f48fb133, 0 8px 32px #e91e8c33;
+    position: relative;
+  }
+  .couple-photo-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: blur(2px) brightness(0.92);
+    transition: filter 1.5s ease;
+  }
+  .couple-photo-wrap.revealed img { filter: blur(0) brightness(1); }
+  .photo-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem;
+    background: rgba(233,30,140,0.12);
+  }
+
+  .gate-date {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--pink-deep);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  .gate-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 8vw, 3rem);
+    color: var(--rose-dark);
+    line-height: 1.2;
+    margin-bottom: 1.4rem;
+  }
+  .gate-title span { color: var(--pink-main); }
+  .gate-poem {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(0.88rem, 3.5vw, 1.05rem);
+    color: var(--text-mid);
+    line-height: 1.9;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+  }
+
+  /* ——— BUTTONS ——— */
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--pink-main), var(--pink-deep));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.9rem 2.2rem;
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    box-shadow: 0 4px 20px #e91e8c44;
+    transition: transform 0.18s, box-shadow 0.18s;
+    text-decoration: none;
+  }
+  .btn-primary:hover, .btn-primary:active {
+    transform: scale(1.04);
+    box-shadow: 0 6px 28px #e91e8c66;
+  }
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: var(--pink-deep);
+    border: 2px solid var(--pink-soft);
+    border-radius: 50px;
+    padding: 0.75rem 1.8rem;
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 0.6rem;
+  }
+  .btn-secondary:hover { background: var(--pink-pale); }
+
+  /* ——— PAGE 2: MEMORY VAULT ——— */
+  #page2 {
+    background: linear-gradient(180deg, #1a0a0f 0%, #3d0c21 60%, #6d1a3a 100%);
+    padding: 3rem 1.5rem 4rem;
+    text-align: center;
+  }
+  .vault-title {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 6vw, 2rem);
+    color: #f8bbd0;
+    margin-bottom: 0.5rem;
+    position: relative; z-index: 2;
+  }
+  .vault-sub {
+    font-size: 0.88rem;
+    color: #e91e8c99;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.1em;
+    position: relative; z-index: 2;
+  }
+  .chapters-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative; z-index: 2;
+  }
+  .chapter-card {
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(248,187,208,0.25);
+    border-radius: 16px;
+    padding: 1.4rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .chapter-card:hover {
+    background: rgba(233,30,140,0.15);
+    border-color: #f48fb166;
+    transform: translateY(-3px);
+  }
+  .chapter-card .lock-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    transition: transform 0.3s;
+  }
+  .chapter-card:hover .lock-icon { transform: rotate(-20deg) scale(1.2); }
+  .chapter-num {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--pink-soft);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .chapter-name {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    color: #fff;
+    line-height: 1.4;
+  }
+  .chapter-emoji {
+    font-size: 1rem;
+    margin-top: 0.3rem;
+    display: block;
+  }
+  /* Lock animation */
+  @keyframes unlockShake {
+    0%,100% { transform: rotate(0); }
+    20% { transform: rotate(-15deg); }
+    40% { transform: rotate(15deg); }
+    60% { transform: rotate(-10deg); }
+    80% { transform: rotate(10deg); }
+  }
+  .chapter-card.unlocking .lock-icon { animation: unlockShake 0.5s ease; }
+  @keyframes unlockPulse {
+    0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .chapter-card.unlocked { border-color: var(--pink-main); background: rgba(233,30,140,0.2); }
+  .chapter-card.unlocked .lock-icon { animation: unlockPulse 0.4s ease forwards; }
+
+  /* ——— SHARED PAGE STYLES ——— */
+  .story-page {
+    background: linear-gradient(160deg, #fff0f5 0%, #fce4ec 50%, #fff8fb 100%);
+    padding: 3rem 1.5rem 4rem;
+    align-items: center;
+    text-align: center;
+  }
+  .story-inner { max-width: 500px; width: 100%; margin: 0 auto; position: relative; z-index: 2; }
+  .chapter-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--pink-main);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  .story-heading {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    color: var(--rose-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+  }
+  .story-media {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 8px 32px rgba(194,24,91,0.18);
+  }
+  .story-media-video {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 8px 32px rgba(194,24,91,0.18);
+    max-height: 360px;
+  }
+  .story-text {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(0.9rem, 3.5vw, 1.05rem);
+    color: var(--text-mid);
+    line-height: 2;
+    margin-bottom: 2rem;
+    white-space: pre-line;
+  }
+  .divider {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--pink-soft), transparent);
+    margin: 1.5rem auto;
+    border-radius: 2px;
+  }
+
+  /* ——— DARK STORY PAGES ——— */
+  .story-page-dark {
+    background: linear-gradient(160deg, #1a0a0f 0%, #3d0c21 100%);
+    padding: 3rem 1.5rem 4rem;
+    align-items: center;
+    text-align: center;
+  }
+  .story-page-dark .story-heading { color: #f8bbd0; }
+  .story-page-dark .story-text { color: #f48fb1cc; }
+  .story-page-dark .chapter-label { color: #f48fb1; }
+  .story-page-dark .divider { background: linear-gradient(90deg, transparent, #f48fb177, transparent); }
+
+  /* ——— PHOTO CARD ——— */
+  .photo-card {
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 8px 32px rgba(194,24,91,0.25);
+  }
+  .photo-card img, .photo-card video {
+    width: 100%; display: block;
+    max-height: 340px; object-fit: cover;
+  }
+  .photo-card-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(61,12,33,0.85));
+    padding: 1.2rem 1rem 0.8rem;
+    font-family: var(--serif);
+    font-style: italic;
+    color: #fff;
+    font-size: 0.88rem;
+  }
+
+  /* ——— UPLOAD PLACEHOLDERS ——— */
+  .media-placeholder {
+    width: 100%;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(233,30,140,0.12), rgba(194,24,91,0.08));
+    border: 2px dashed rgba(233,30,140,0.35);
+    padding: 2.5rem 1.5rem;
+    margin-bottom: 1.8rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .media-placeholder:hover { background: rgba(233,30,140,0.15); border-color: var(--pink-main); }
+  .media-placeholder label {
+    display: block; cursor: pointer;
+  }
+  .media-placeholder input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .media-placeholder-icon { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+  .media-placeholder-text { font-size: 0.88rem; color: var(--pink-deep); font-weight: 700; }
+  .media-placeholder-sub { font-size: 0.78rem; color: var(--text-mid); margin-top: 0.2rem; }
+  .media-preview { display: none; }
+  .media-preview img, .media-preview video {
+    width: 100%; border-radius: 16px;
+    max-height: 340px; object-fit: cover;
+    box-shadow: 0 4px 24px rgba(194,24,91,0.2);
+    margin-bottom: 0.5rem;
+  }
+
+  /* ——— CUTE VIDEO FRAME ——— */
+  .video-frame-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.8rem;
+  }
+  .video-frame {
+    background: #fff;
+    border-radius: 4px;
+    padding: 10px 10px 36px 10px;
+    box-shadow: 0 8px 32px rgba(194,24,91,0.22), 0 2px 8px rgba(0,0,0,0.12);
+    position: relative;
+    transform: rotate(-1deg);
+    transition: transform 0.3s ease;
+  }
+  .video-frame:hover { transform: rotate(0deg) scale(1.01); }
+  .video-frame video {
+    width: 100%;
+    border-radius: 2px;
+    display: block;
+    max-height: 300px;
+    object-fit: cover;
+  }
+  .video-frame-label {
+    position: absolute;
+    bottom: 6px; left: 0; right: 0;
+    text-align: center;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.78rem;
+    color: #c2185b;
+    letter-spacing: 0.05em;
+  }
+  .video-frame-hearts {
+    position: absolute;
+    top: -10px; right: -10px;
+    font-size: 1.3rem;
+    animation: heartbeat 1.4s ease-in-out infinite;
+  }
+  /* slight tilt variation per chapter */
+  .video-frame.tilt-right { transform: rotate(1.2deg); }
+  .video-frame.tilt-right:hover { transform: rotate(0deg) scale(1.01); }
+  .video-frame.tilt-none { transform: rotate(0deg); }
+
+  /* ——— COUNTER PAGE ——— */
+  #page5 {
+    background: linear-gradient(160deg, #1a0a0f 0%, #3d0c21 60%, #6d1a3a 100%);
+    padding: 3rem 1.5rem 4rem;
+    align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .counter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 400px;
+    margin: 0 auto 2rem;
+    position: relative; z-index: 2;
+  }
+  .counter-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(248,187,208,0.2);
+    border-radius: 16px;
+    padding: 1.2rem 0.8rem;
+  }
+  .counter-num {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 7vw, 2.6rem);
+    font-weight: 700;
+    color: var(--pink-soft);
+    display: block;
+    line-height: 1.1;
+  }
+  .counter-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+  .counter-feelings {
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+    color: var(--pink-soft);
+    margin-bottom: 1.5rem;
+    position: relative; z-index: 2;
+  }
+
+  /* ——— PAGE 6: CHAPTER 4 DEEPEST ——— */
+  #page6 {
+    background: linear-gradient(180deg, #0d0108 0%, #1a0a0f 40%, #3d0c21 100%);
+    padding: 3rem 1.5rem 4rem;
+    align-items: center;
+    text-align: center;
+  }
+  #page6 .story-heading { color: #f8bbd0; }
+  #page6 .story-text { color: #f48fb1cc; }
+  #page6 .chapter-label { color: #f48fb1; }
+
+  /* ——— SURPRISE ROOM ——— */
+  #page7 {
+    background: linear-gradient(160deg, #fff0f5 0%, #fce4ec 50%, #fff8fb 100%);
+    padding: 3rem 1.5rem 4rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* ——— PASSWORD QUIZ ——— */
+  .quiz-box {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 8px 40px rgba(194,24,91,0.12);
+    max-width: 400px; width: 100%;
+    margin: 0 auto;
+    position: relative; z-index: 2;
+  }
+  .quiz-lock { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .quiz-q {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--rose-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  .quiz-option {
+    display: flex; align-items: center; gap: 0.8rem;
+    background: var(--pink-blush);
+    border: 1.5px solid var(--pink-pale);
+    border-radius: 50px;
+    padding: 0.75rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+    width: 100%;
+    text-align: left;
+  }
+  .quiz-option:hover { border-color: var(--pink-soft); background: #fce4ec; }
+  .quiz-option.wrong { border-color: #ff5252; background: #fff5f5; animation: shake 0.4s; }
+  .quiz-option.correct { border-color: var(--pink-main); background: linear-gradient(135deg, #fce4ec, #f8bbd0); color: var(--rose-dark); font-weight: 700; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+  .quiz-result {
+    display: none;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--pink-deep);
+    margin-top: 1rem;
+    line-height: 1.7;
+  }
+  .quiz-result.show { display: block; animation: fadeIn 0.6s ease; }
+
+  /* ——— REASONS PAGE ——— */
+  #page8 {
+    background: linear-gradient(160deg, #fff0f5 0%, #fce4ec 100%);
+    padding: 3rem 1.5rem 4rem;
+    align-items: center;
+    text-align: center;
+  }
+  .reasons-list {
+    list-style: none;
+    max-width: 440px; width: 100%;
+    margin: 0 auto;
+    position: relative; z-index: 2;
+  }
+  .reason-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    background: #fff;
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.8rem;
+    box-shadow: 0 2px 12px rgba(194,24,91,0.08);
+    text-align: left;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .reason-item.visible { opacity: 1; transform: translateY(0); }
+  .reason-num {
+    background: linear-gradient(135deg, var(--pink-main), var(--pink-deep));
+    color: #fff;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .reason-text {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  /* ——— FINAL VIDEO PAGE ——— */
+  #page9 {
+    background: linear-gradient(180deg, #0d0108 0%, #1a0a0f 50%, #3d0c21 100%);
+    padding: 3rem 1.5rem 4rem;
+    align-items: center;
+    text-align: center;
+  }
+  #page9 .story-heading { color: #f8bbd0; }
+  #page9 .story-text { color: #f48fb1cc; }
+  #page9 .chapter-label { color: #f48fb1; }
+
+  /* ——— ANIMATIONS ——— */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeIn 0.8s ease both; }
+  .fade-in-delay-1 { animation-delay: 0.15s; }
+  .fade-in-delay-2 { animation-delay: 0.3s; }
+  .fade-in-delay-3 { animation-delay: 0.5s; }
+  .fade-in-delay-4 { animation-delay: 0.7s; }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    30% { transform: scale(1.18); }
+    60% { transform: scale(0.96); }
+  }
+  .heart-beat { display: inline-block; animation: heartbeat 1.4s ease-in-out infinite; }
+
+  /* ——— NAV BACK ——— */
+  .nav-back {
+    position: absolute; top: 1rem; left: 1rem;
+    background: rgba(255,255,255,0.2);
+    border: none; border-radius: 50%;
+    width: 36px; height: 36px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--pink-deep);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+  }
+  .nav-back:hover { background: rgba(255,255,255,0.4); }
+  .nav-back-dark {
+    position: absolute; top: 1rem; left: 1rem;
+    background: rgba(255,255,255,0.1);
+    border: none; border-radius: 50%;
+    width: 36px; height: 36px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--pink-soft);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+    transition: background 0.2s;
+  }
+  .nav-back-dark:hover { background: rgba(255,255,255,0.2); }
+
+  /* ——— HEARTS BURST ——— */
+  #hearts-burst { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+  .burst-heart {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: burstUp 1.2s ease forwards;
+  }
+  @keyframes burstUp {
+    0%   { opacity: 1; transform: translateY(0) scale(0.5); }
+    100% { opacity: 0; transform: translateY(-120px) scale(1.4); }
+  }
+
+  /* ——— MUSIC BAR ——— */
+  #music-bar {
+    position: fixed; top: 1rem; right: 1rem;
+    z-index: 1000;
+    background: rgba(233,30,140,0.18);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(244,143,177,0.3);
+    border-radius: 50px;
+    padding: 0.4rem 0.9rem 0.4rem 0.7rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.8rem;
+    color: var(--rose-dark);
+    font-weight: 700;
+  }
+  #music-bar:hover { background: rgba(233,30,140,0.3); }
+  .music-note { font-size: 1rem; animation: noteSway 1s ease-in-out infinite alternate; display: inline-block; }
+  @keyframes noteSway { from { transform: rotate(-10deg); } to { transform: rotate(10deg); } }
+  .note-bars { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
+  .note-bar {
+    width: 3px; background: var(--pink-main); border-radius: 2px;
+    animation: noteBar 0.6s ease-in-out infinite alternate;
+  }
+  .note-bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .note-bar:nth-child(2) { height: 10px; animation-delay: 0.15s; }
+  .note-bar:nth-child(3) { height: 14px; animation-delay: 0.3s; }
+  .note-bar:nth-child(4) { height: 8px; animation-delay: 0.45s; }
+  @keyframes noteBar { from { transform: scaleY(0.4); } to { transform: scaleY(1); } }
+  #music-bar.paused .note-bars { opacity: 0.3; }
+  #music-bar.paused .note-bars .note-bar { animation: none; height: 6px !important; }
+
+  /* ——— RESPONSIVE ——— */
+  @media (max-width: 380px) {
+    .chapters-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .counter-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ——— SCROLLABLE PAGES ——— */
+  .page { overflow-y: auto; }
+
+  /* ——— ANNIVERSARY DATES ——— */
+  .dates-bar {
+    display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;
+    margin-bottom: 2rem; position: relative; z-index: 2;
+  }
+  .date-chip {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(248,187,208,0.3);
+    border-radius: 50px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.75rem;
+    color: #f8bbd0;
+    letter-spacing: 0.05em;
+  }
+  .date-chip span { color: var(--pink-soft); font-weight: 700; }
+
+  /* ——— MOMO / PINK ICON BITS ——— */
+  .fun-facts {
+    display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;
+    margin-top: 1.2rem; position: relative; z-index: 2;
+  }
+  .fun-chip {
+    background: rgba(255,255,255,0.85);
+    border-radius: 50px;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    color: var(--rose-dark);
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(194,24,91,0.1);
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     INTRO — COUNTDOWN OVERLAY
+═══════════════════════════════════════════════════════ -->
+<div id="intro-overlay">
+  <!-- ripple rings -->
+  <div class="intro-ring" style="width:220px;height:220px;animation-delay:0s;"></div>
+  <div class="intro-ring" style="width:220px;height:220px;animation-delay:0.3s;"></div>
+  <div class="intro-ring" style="width:220px;height:220px;animation-delay:0.6s;"></div>
+
+  <div id="countdown-num">5</div>
+  <div id="intro-label">get ready&nbsp;🩷</div>
+
+  <div id="intro-dots">
+    <div class="intro-dot active" id="dot-5"></div>
+    <div class="intro-dot" id="dot-4"></div>
+    <div class="intro-dot" id="dot-3"></div>
+    <div class="intro-dot" id="dot-2"></div>
+    <div class="intro-dot" id="dot-1"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     WISH SCREEN — lands after countdown
+═══════════════════════════════════════════════════════ -->
+<div id="wish-screen">
+  <div id="wish-cake">🎂</div>
+  <div id="wish-hb">Happy Birthday,</div>
+  <div id="wish-name">Nidhi ❤️</div>
+  <div id="wish-sub">28th June · Your special day</div>
+  <div id="wish-enter-btn">
+    <button class="btn-primary" onclick="enterSite()">Open Your Surprise 💫</button>
+  </div>
+</div>
+
+<!-- HEARTS BURST CONTAINER -->
+<div id="hearts-burst"></div>
+
+<!-- FLOATING PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- MUSIC BAR -->
+<div id="music-bar" onclick="toggleMusic()" title="Toggle music">
+  <span class="music-note">♪</span>
+  <div class="note-bars">
+    <div class="note-bar"></div>
+    <div class="note-bar"></div>
+    <div class="note-bar"></div>
+    <div class="note-bar"></div>
+  </div>
+  <span style="margin-left:3px;font-size:0.75rem">Tum Ho Toh</span>
+</div>
+
+<!-- Hidden YouTube player for Tum Ho Toh - Saiyara -->
+<div id="yt-player" style="position:fixed;bottom:-9999px;left:-9999px;width:1px;height:1px;"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 1 — BIRTHDAY GATE
+═══════════════════════════════════════════════════════ -->
+<section class="page" id="page1">
+  <div class="gate-inner">
+    <div class="couple-photo-wrap" id="couplePhotoWrap">
+      <!-- INSTRUCTION: Replace the src below with your uploaded couple photo URL -->
+      <!-- For CodePen: upload to https://imgbb.com or similar, paste direct link -->
+      <img src="https://res.cloudinary.com/dx8yvlyge/image/upload/v1782504126/IMG-20260424-WA0009_eolx37.jpg" 
+           id="couplePhoto" alt="Ritesh & Nidhi">
+      <div class="photo-overlay"></div>
+    </div>
+
+    <p class="gate-date fade-in">28th June 2026</p>
+
+    <h1 class="gate-title fade-in fade-in-delay-1">
+      Happy Birthday,<br><span>My Love</span> <span class="heart-beat">❤️</span>
+    </h1>
+
+    <p class="gate-poem fade-in fade-in-delay-2">
+"Today the world celebrates the day you were born…<br>
+But my heart celebrates something more.<br><br>
+Because this same date gave me my favourite person,<br>
+my best memories,<br>
+and a story I never want to end.<br><br>
+So today, I made something for you…<br>
+Not just a website…<br>
+A small walk through US ❤️"
+    </p>
+
+    <div class="fade-in fade-in-delay-3">
+      <button class="btn-primary" onclick="goToPage('page2'); revealPhoto()">
+        Start Our Journey 💫
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 2 — MEMORY VAULT
+═══════════════════════════════════════════════════════ -->
+<section class="page" id="page2">
+  <button class="nav-back-dark" onclick="goToPage('page1')">←</button>
+
+  <div style="padding:3rem 1.5rem 4rem; text-align:center; position:relative; z-index:2; flex:1;">
+    <p class="vault-sub">— our story —</p>
+    <h2 class="vault-title fade-in">
+      "Every love story has chapters…<br>here are ours ❤️"
+    </h2>
+
+    <div class="dates-bar fade-in fade-in-delay-1">
+      <div class="date-chip">First Meet <span>11 Aug 2022</span></div>
+      <div class="date-chip">First Movie <span>9 Sep 2022</span></div>
+      <div class="date-chip">Anniversary <span>28 Jun 2024</span></div>
+    </div>
+
+    <div class="chapters-grid fade-in fade-in-delay-2">
+      <div class="chapter-card" onclick="unlockChapter(this, 'page3')">
+        <span class="lock-icon">🔒</span>
+        <div class="chapter-num">Chapter 1</div>
+        <div class="chapter-name">The Day Two Strangers Met</div>
+        <span class="chapter-emoji">🥹</span>
+      </div>
+      <div class="chapter-card" onclick="unlockChapter(this, 'page4')">
+        <span class="lock-icon">🔒</span>
+        <div class="chapter-num">Chapter 2</div>
+        <div class="chapter-name">When My Heart Chose You</div>
+        <span class="chapter-emoji">❤️</span>
+      </div>
+      <div class="chapter-card" onclick="unlockChapter(this, 'page5')">
+        <span class="lock-icon">🔒</span>
+        <div class="chapter-num">Chapter 3</div>
+        <div class="chapter-name">365 Days of Loving You</div>
+        <span class="chapter-emoji">🌎</span>
+      </div>
+      <div class="chapter-card" onclick="unlockChapter(this, 'page6')">
+        <span class="lock-icon">🔒</span>
+        <div class="chapter-num">Chapter 4</div>
+        <div class="chapter-name">Two Years… Still My Favourite</div>
+        <span class="chapter-emoji">💍</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 3 — CHAPTER 1: THE DAY WE MET
+═══════════════════════════════════════════════════════ -->
+<section class="page story-page" id="page3">
+  <button class="nav-back" onclick="goToPage('page2')">←</button>
+  <div class="story-inner">
+    <p class="chapter-label fade-in">Chapter 1 · 9 September 2022</p>
+    <h2 class="story-heading fade-in fade-in-delay-1">The Day We Met 🥹🎬</h2>
+
+    <!-- VIDEO: Replace src with your Catbox/hosted link -->
+    <video controls style="width:100%;border-radius:16px;max-height:340px;margin-bottom:1.8rem;box-shadow:0 8px 32px rgba(194,24,91,0.18);">
+     <source src="https://res.cloudinary.com/dx8yvlyge/video/upload/v1782503074/1000103477_tlaj2g.mp4">
+    </video>
+
+    <p class="story-text fade-in fade-in-delay-3">
+"Our first movie together — Brahmāstra ❤️
+
+Every time Kesariya played and Alia came on screen…
+I still remember looking at you instead.
+
+Your smile while enjoying the movie made me fall
+for you a little more every time. 🥹❤️
+
+I went there to watch a movie…
+but came back with a beautiful beginning of US ❤️"
+    </p>
+
+    <div class="divider"></div>
+
+    <button class="btn-primary" onclick="goToPage('page4'); burstHearts()">
+      When Everything Started Changing ➡️
+    </button>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 4 — CHAPTER 2: WHEN FEELINGS FOUND THEIR WAY
+═══════════════════════════════════════════════════════ -->
+<section class="page story-page-dark" id="page4" style="padding:3rem 1.5rem 4rem; align-items:center; text-align:center;">
+  <button class="nav-back-dark" onclick="goToPage('page2')">←</button>
+  <div class="story-inner">
+    <p class="chapter-label fade-in">Chapter 2 · The Feeling</p>
+    <h2 class="story-heading fade-in fade-in-delay-1">When Feelings Found Their Way ❤️</h2>
+
+    <!-- VIDEO: Replace src with your Catbox/hosted link -->
+    <video controls style="width:100%;border-radius:16px;max-height:340px;margin-bottom:1.8rem;box-shadow:0 8px 32px rgba(194,24,91,0.18);">
+      <source src="https://res.cloudinary.com/dx8yvlyge/video/upload/v1782502887/1000103476_vpqtw1.mp4" type="video/mp4">
+    </video>
+
+    <p class="story-text fade-in fade-in-delay-3">
+"I don't know exactly when it happened…
+
+Maybe between our endless talks,
+silly jokes, little fights,
+and the way I smiled seeing your name on my phone…
+
+Until this day… ❤️
+
+When we danced, laughed,
+and simply enjoyed being with each other.
+
+Maybe it wasn't just a dance…
+It was the moment I realized
+how special you had become to me. 🥹
+
+It was no longer just talking…
+It was caring.
+It was missing.
+It was love ❤️"
+    </p>
+
+    <div class="divider"></div>
+
+    <button class="btn-primary" onclick="goToPage('page5'); startCounters()">
+      Unlock Our First Year 🌹
+    </button>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 5 — CHAPTER 3: 365 DAYS
+═══════════════════════════════════════════════════════ -->
+<section class="page" id="page5" style="background:linear-gradient(180deg,#1a0a0f 0%,#3d0c21 60%,#6d1a3a 100%); padding:3rem 1.5rem 4rem; align-items:center; text-align:center;">
+  <button class="nav-back-dark" onclick="goToPage('page2')">←</button>
+  <div style="max-width:500px; width:100%; margin:0 auto; position:relative; z-index:2;">
+    <p class="chapter-label" style="color:#f48fb1; font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; margin-bottom:0.5rem; font-weight:700; font-family:var(--sans);">Chapter 3 · 28 June 2024</p>
+    <h2 class="story-heading" style="color:#f8bbd0; font-family:var(--serif); font-size:clamp(1.5rem,6vw,2.2rem); margin-bottom:1.5rem; line-height:1.3;">365 Days of Us 🌎❤️</h2>
+
+    <div class="counter-grid">
+      <div class="counter-card">
+        <span class="counter-num" id="cnt-days">0</span>
+        <div class="counter-label">Days</div>
+      </div>
+      <div class="counter-card">
+        <span class="counter-num" id="cnt-hours">0</span>
+        <div class="counter-label">Hours</div>
+      </div>
+      <div class="counter-card">
+        <span class="counter-num" id="cnt-minutes">0</span>
+        <div class="counter-label">Minutes</div>
+      </div>
+      <div class="counter-card">
+        <span class="counter-num" id="cnt-feelings">0</span>
+        <div class="counter-label">Feelings</div>
+      </div>
+    </div>
+
+    <p style="font-family:var(--serif); font-style:italic; font-size:clamp(0.9rem,3.5vw,1.05rem); color:rgba(244,143,177,0.85); line-height:2; margin-bottom:2rem; white-space:pre-line;">
+"Our first year wasn't a fairy tale…
+
+We laughed.
+We fought.
+We misunderstood each other.
+
+But every single time…
+We chose each other again.
+
+And that's what made our story beautiful ❤️"
+    </p>
+
+    <button class="btn-primary" onclick="goToPage('page6')">Another Chapter Awaits 💍</button>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 6 — CHAPTER 4: TWO YEARS + BIRTHDAY (DEEPEST)
+═══════════════════════════════════════════════════════ -->
+<section class="page" id="page6" style="background:linear-gradient(180deg,#0d0108 0%,#1a0a0f 40%,#3d0c21 100%); padding:3rem 1.5rem 4rem; align-items:center; text-align:center;">
+  <button class="nav-back-dark" onclick="goToPage('page2')">←</button>
+  <div class="story-inner">
+    <p class="chapter-label" style="color:#f48fb1; font-size:0.72rem; letter-spacing:0.25em; text-transform:uppercase; margin-bottom:0.5rem; font-weight:700; font-family:var(--sans);">Chapter 4 · Two Years & A Birthday</p>
+    <h2 class="story-heading" style="color:#f8bbd0; font-family:var(--serif); font-size:clamp(1.5rem,6vw,2.2rem); margin-bottom:1rem; line-height:1.3;">
+      Two Years + Birthday 🎂💍
+    </h2>
+
+    <!-- PHOTO: Replace src with your Catbox/imgBB link -->
+    <div class="video-frame-wrap fade-in fade-in-delay-1">
+      <div class="video-frame tilt-none" style="padding-bottom:36px;">
+        <img src="YOUR_PHOTO_LINK_HERE" style="width:100%;border-radius:2px;max-height:300px;object-fit:cover;display:block;">
+        <div class="video-frame-label">Two years of us ❤️</div>
+        <div class="video-frame-hearts">💍</div>
+      </div>
+    </div>
+
+    <p style="font-family:var(--serif); font-style:italic; font-size:clamp(0.9rem,3.5vw,1.05rem); color:rgba(244,143,177,0.85); line-height:2; margin-bottom:2rem; white-space:pre-line;">
+"Two years ago, I never knew how much
+one person could mean to me.
+
+But today when I look at you…
+
+I see my happiness.
+My partner.
+My biggest supporter.
+My favourite human.
+
+After everything we've been through…
+
+I would still go back to the beginning
+and choose you again ❤️"
+    </p>
+
+    <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(248,187,208,0.2); border-radius:16px; padding:1.2rem; margin-bottom:2rem;">
+      <p style="font-family:var(--serif); font-style:italic; color:#f8bbd0; font-size:1rem; line-height:1.7;">
+        Happy Birthday, Nidhi 🎂<br>
+        <span style="color:#f48fb1; font-size:0.9rem;">28th June is my favourite day<br>because it gave me you ❤️</span>
+      </p>
+    </div>
+
+    <button class="btn-primary" onclick="goToPage('page7'); burstHearts()">Enter Your Surprise Room ✨</button>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 7 — SURPRISE ROOM / LOVE PASSWORD
+═══════════════════════════════════════════════════════ -->
+<section class="page" id="page7" style="background:linear-gradient(160deg,#fff0f5 0%,#fce4ec 50%,#fff8fb 100%); padding:3rem 1.5rem 4rem; align-items:center; text-align:center;">
+  <button class="nav-back" onclick="goToPage('page6')">←</button>
+  <div style="max-width:400px; width:100%; margin:0 auto; position:relative; z-index:2;">
+    <p style="font-size:0.72rem; letter-spacing:0.25em; color:var(--pink-main); text-transform:uppercase; margin-bottom:0.5rem; font-weight:700; font-family:var(--sans);">Surprise Room ✨</p>
+    <h2 style="font-family:var(--serif); font-size:clamp(1.5rem,6vw,2rem); color:var(--rose-dark); margin-bottom:2rem; line-height:1.3;">Love Password 🔐</h2>
+
+    <div class="quiz-box">
+      <span class="quiz-lock">🔐</span>
+      <p class="quiz-q">"Who loves you the most in this world? 🤭"</p>
+
+      <button class="quiz-option" onclick="quizWrong(this)">❌ Your celebrity crush 😂</button>
+      <button class="quiz-option" onclick="quizWrong(this)">❌ Your pillow because you sleep too much 😴</button>
+      <button class="quiz-option" onclick="quizWrong(this)">❌ Food 🍕</button>
+      <button class="quiz-option" id="correctAnswer" onclick="quizCorrect(this)">✅ Ritesh ❤️</button>
+
+      <div class="quiz-result" id="quiz-result">
+        "Correct ❤️<br><br>
+        Because nobody can replace this idiot who loves you so much."
+      </div>
+    </div>
+
+    <div id="quiz-next" style="display:none; margin-top:1.5rem;">
+      <button class="btn-primary" onclick="goToPage('page8')">See Why I Love You ❤️</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 8 — 10 REASONS
+═══════════════════════════════════════════════════════ -->
+<section class="page" id="page8" style="background:linear-gradient(160deg,#fff0f5 0%,#fce4ec 100%); padding:3rem 1.5rem 4rem; align-items:center; text-align:center;">
+  <button class="nav-back" onclick="goToPage('page7')">←</button>
+  <div style="max-width:480px; width:100%; margin:0 auto; position:relative; z-index:2;">
+    <p style="font-size:0.72rem; letter-spacing:0.25em; color:var(--pink-main); text-transform:uppercase; margin-bottom:0.5rem; font-weight:700; font-family:var(--sans);">Just for you</p>
+    <h2 style="font-family:var(--serif); font-size:clamp(1.4rem,6vw,2rem); color:var(--rose-dark); margin-bottom:2rem; line-height:1.3;">10 Reasons Why I Love You ❤️</h2>
+
+    <ul class="reasons-list" id="reasons-list">
+      <li class="reason-item"><div class="reason-num">1</div><div class="reason-text">Your beautiful smile that lights up every room</div></li>
+      <li class="reason-item"><div class="reason-num">2</div><div class="reason-text">The way you care for me like nobody else does</div></li>
+      <li class="reason-item"><div class="reason-num">3</div><div class="reason-text">Your childish behaviour that makes every moment fun</div></li>
+      <li class="reason-item"><div class="reason-num">4</div><div class="reason-text">Your little angry face that I find secretly adorable</div></li>
+      <li class="reason-item"><div class="reason-num">5</div><div class="reason-text">Your voice that changes my mood in an instant</div></li>
+      <li class="reason-item"><div class="reason-num">6</div><div class="reason-text">Your hugs that feel like the safest place on earth</div></li>
+      <li class="reason-item"><div class="reason-num">7</div><div class="reason-text">Your madness with me that I never want to end</div></li>
+      <li class="reason-item"><div class="reason-num">8</div><div class="reason-text">Your understanding heart that gets me without words</div></li>
+      <li class="reason-item"><div class="reason-num">9</div><div class="reason-text">The way you never give up on us</div></li>
+      <li class="reason-item"><div class="reason-num" style="background:linear-gradient(135deg,#e91e8c,#880e4f);">❤️</div><div class="reason-text">Because you are YOU — and that's everything ❤️</div></li>
+    </ul>
+
+    <div style="margin-top:2rem;">
+      <button class="btn-primary" onclick="goToPage('page9')">One Last Surprise 🎁</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE 9 — FINAL VIDEO / MEMORIES REEL
+═══════════════════════════════════════════════════════ -->
+<section class="page" id="page9" style="background:linear-gradient(180deg,#0d0108 0%,#1a0a0f 50%,#3d0c21 100%); padding:3rem 1.5rem 4rem; align-items:center; text-align:center;">
+  <button class="nav-back-dark" onclick="goToPage('page8')">←</button>
+  <div class="story-inner">
+    <p style="font-size:0.72rem; letter-spacing:0.25em; color:#f48fb1; text-transform:uppercase; margin-bottom:0.5rem; font-weight:700; font-family:var(--sans);">Us. Always ❤️</p>
+    <h2 style="font-family:var(--serif); font-size:clamp(1.5rem,6vw,2.2rem); color:#f8bbd0; margin-bottom:1.5rem; line-height:1.3;">
+      Memories Till Date 🎬✨
+    </h2>
+
+    <!-- FINAL 55-SEC MEMORIES VIDEO: Replace src with your Catbox/hosted link -->
+    <div class="video-frame-wrap">
+      <div class="video-frame tilt-none" style="transform:rotate(0deg);">
+        <video controls style="width:100%;border-radius:16px;max-height:340px;margin-bottom:1.8rem;box-shadow:0 8px 32px rgba(194,24,91,0.18);">
+          <source src="https://res.cloudinary.com/dx8yvlyge/video/upload/v1782503076/1000103473_doydt4.mp4" type="video/mp4">
+        </video>
+        <div class="video-frame-label">Us, always 🎬 · memories till date</div>
+        <div class="video-frame-hearts">✨</div>
+      </div>
+    </div>
+
+    <p style="font-family:var(--serif); font-style:italic; font-size:clamp(0.9rem,3.5vw,1.05rem); color:rgba(244,143,177,0.85); line-height:2; margin-bottom:2rem; white-space:pre-line;">
+"From the day we first met at the movies,
+to every laugh, every fight, every moment in between…
+
+This is us.
+
+And I wouldn't change a single second.
+
+Happy Birthday, Nidhi. 🎂
+
+You are my favourite notification,
+my favourite person,
+my favourite everything.
+
+Love you, always. ❤️
+— Ritesh"
+    </p>
+
+    <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(248,187,208,0.2); border-radius:20px; padding:1.5rem; margin-bottom:2rem;">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">🎂</div>
+      <p style="font-family:var(--serif); font-style:italic; color:#f8bbd0; font-size:1.1rem; line-height:1.6;">
+        Happy 🥹 Birthday<br>
+        <strong style="color:#f48fb1; font-size:1.4rem;">Nidhi ❤️</strong><br>
+        <span style="font-size:0.85rem; color:rgba(255,255,255,0.4);">28 June — forever my favourite date</span>
+      </p>
+    </div>
+
+    <button class="btn-secondary" onclick="goToPage('page1')" style="color:#f48fb1; border-color:rgba(244,143,177,0.4);">
+      Read Again from Start 🔁
+    </button>
+  </div>
+</section>
+
+
+<script>
+// ═══════════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════════
+function goToPage(id) {
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+    p.scrollTop = 0;
+  });
+  const page = document.getElementById(id);
+  if (page) {
+    page.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  // Pause bg music on final video page so video audio plays solo
+  if (id === 'page9') {
+    if (musicPlaying && ytPlayer && ytPlayer.pauseVideo) {
+      ytPlayer.pauseVideo();
+      musicPlaying = false;
+      document.getElementById('music-bar').classList.add('paused');
+    }
+    // Autoplay the final video
+    const fv = document.getElementById('final-video');
+    if (fv) { fv.muted = false; fv.play().catch(() => {}); }
+  } else {
+    // Resume bg music when leaving page9
+    const fv = document.getElementById('final-video');
+    if (fv) { fv.pause(); }
+    if (!musicPlaying && ytPlayer && ytPlayer.playVideo) {
+      ytPlayer.playVideo();
+      musicPlaying = true;
+      document.getElementById('music-bar').classList.remove('paused');
+    }
+  }
+  // Trigger reason animations when page 8
+  if (id === 'page8') {
+    setTimeout(animateReasons, 300);
+  }
+}
+
+// ═══════════════════════════════════════
+// FLOATING PARTICLES
+// ═══════════════════════════════════════
+(function createParticles() {
+  const container = document.getElementById('particles');
+  const shapes = ['♥', '·', '✦', '°', '♡'];
+  const colors = ['#e91e8c', '#f48fb1', '#f8bbd0', '#c2185b', '#ff80ab'];
+  for (let i = 0; i < 28; i++) {
+    const el = document.createElement('span');
+    el.className = 'particle';
+    el.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+    const size = 10 + Math.random() * 18;
+    el.style.cssText = `
+      left:${Math.random() * 100}%;
+      font-size:${size}px;
+      color:${colors[Math.floor(Math.random() * colors.length)]};
+      animation-duration:${8 + Math.random() * 14}s;
+      animation-delay:${-Math.random() * 12}s;
+      opacity:0;
+    `;
+    container.appendChild(el);
+  }
+})();
+
+// ═══════════════════════════════════════
+// PHOTO REVEAL
+// ═══════════════════════════════════════
+function revealPhoto() {
+  setTimeout(() => {
+    document.getElementById('couplePhotoWrap').classList.add('revealed');
+  }, 800);
+}
+
+// ═══════════════════════════════════════
+// CHAPTER UNLOCK ANIMATION
+// ═══════════════════════════════════════
+function unlockChapter(card, nextPage) {
+  if (card.classList.contains('unlocking')) return;
+  card.classList.add('unlocking');
+
+  // Shake animation
+  setTimeout(() => {
+    card.classList.remove('unlocking');
+    card.classList.add('unlocked');
+    card.querySelector('.lock-icon').textContent = '🔓';
+
+    // Burst hearts then navigate
+    burstHearts();
+    setTimeout(() => goToPage(nextPage), 700);
+  }, 600);
+}
+
+// ═══════════════════════════════════════
+// QUIZ LOGIC
+// ═══════════════════════════════════════
+function quizWrong(btn) {
+  btn.classList.remove('wrong');
+  void btn.offsetWidth; // reflow
+  btn.classList.add('wrong');
+  setTimeout(() => btn.classList.remove('wrong'), 600);
+}
+
+function quizCorrect(btn) {
+  btn.classList.add('correct');
+  document.querySelectorAll('.quiz-option').forEach(b => {
+    if (b !== btn) b.disabled = true;
+  });
+  const result = document.getElementById('quiz-result');
+  result.classList.add('show');
+  const lock = document.querySelector('.quiz-lock');
+  lock.textContent = '🔓';
+  burstHearts();
+  setTimeout(() => {
+    document.getElementById('quiz-next').style.display = 'block';
+  }, 1200);
+}
+
+// ═══════════════════════════════════════
+// COUNTER ANIMATION
+// ═══════════════════════════════════════
+let countersStarted = false;
+function startCounters() {
+  if (countersStarted) return;
+  countersStarted = true;
+
+  // Calculate real days from anniversary: 28 June 2024
+  const anniversary = new Date('2024-06-28T00:00:00');
+  const now = new Date();
+  const diffMs = now - anniversary;
+  const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const totalHours = totalDays * 24;
+  const totalMinutes = totalDays * 1440;
+
+  setTimeout(() => {
+    animateCount('cnt-days', totalDays, 1400);
+    animateCount('cnt-hours', totalHours, 1600);
+    animateCount('cnt-minutes', totalMinutes, 2000, true);
+    animateCountText('cnt-feelings', 'Millions', 1400);
+  }, 400);
+}
+
+function animateCount(id, target, duration, addPlus) {
+  const el = document.getElementById(id);
+  const start = Date.now();
+  function tick() {
+    const elapsed = Date.now() - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const val = Math.floor(eased * target);
+    el.textContent = val.toLocaleString() + (addPlus && progress >= 1 ? '+' : '');
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function animateCountText(id, text, delay) {
+  setTimeout(() => {
+    document.getElementById(id).textContent = text;
+  }, delay);
+}
+
+// ═══════════════════════════════════════
+// REASONS ANIMATION
+// ═══════════════════════════════════════
+function animateReasons() {
+  const items = document.querySelectorAll('.reason-item');
+  items.forEach((item, i) => {
+    setTimeout(() => item.classList.add('visible'), i * 120);
+  });
+}
+
+// ═══════════════════════════════════════
+// HEARTS BURST
+// ═══════════════════════════════════════
+function burstHearts() {
+  const container = document.getElementById('hearts-burst');
+  for (let i = 0; i < 12; i++) {
+    const h = document.createElement('span');
+    h.className = 'burst-heart';
+    h.textContent = ['❤️','🩷','💕','💗','💖'][Math.floor(Math.random() * 5)];
+    h.style.left = (20 + Math.random() * 60) + '%';
+    h.style.top = (30 + Math.random() * 40) + '%';
+    h.style.animationDelay = (Math.random() * 0.4) + 's';
+    h.style.fontSize = (1 + Math.random()) + 'rem';
+    container.appendChild(h);
+    setTimeout(() => h.remove(), 1400);
+  }
+}
+
+// ═══════════════════════════════════════
+// MEDIA UPLOAD HANDLER
+// ═══════════════════════════════════════
+function handleMedia(input, chapter) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const placeholder = document.getElementById(chapter + '-placeholder');
+  const preview = document.getElementById(chapter + '-preview');
+  const url = URL.createObjectURL(file);
+
+  placeholder.style.display = 'none';
+  preview.style.display = 'block';
+  preview.innerHTML = '';
+
+  if (file.type.startsWith('video/')) {
+    const vid = document.createElement('video');
+    vid.src = url;
+    vid.controls = true;
+    vid.style.cssText = 'width:100%;border-radius:16px;max-height:340px;margin-bottom:0.5rem;box-shadow:0 4px 24px rgba(194,24,91,0.2);';
+    preview.appendChild(vid);
+  } else {
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.cssText = 'width:100%;border-radius:16px;max-height:340px;object-fit:cover;margin-bottom:0.5rem;box-shadow:0 4px 24px rgba(194,24,91,0.2);';
+    preview.appendChild(img);
+  }
+}
+
+// ═══════════════════════════════════════
+// YOUTUBE MUSIC
+// ═══════════════════════════════════════
+let musicPlaying = false;
+var ytPlayer;
+
+var ytTag = document.createElement('script');
+ytTag.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(ytTag);
+
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('yt-player', {
+    height: '1', width: '1',
+    videoId: 'N7jDUBRVQVA',
+    playerVars: {
+      autoplay: 0, loop: 1,
+      playlist: 'N7jDUBRVQVA',
+      controls: 0, disablekb: 1,
+      fs: 0, iv_load_policy: 3,
+      modestbranding: 1, start: 0
+    },
+    events: { onReady: function(e) { e.target.setVolume(40); } }
+  });
+}
+
+document.addEventListener('click', function startMusic() {
+  if (!musicPlaying && ytPlayer && ytPlayer.playVideo) {
+    ytPlayer.playVideo();
+    musicPlaying = true;
+    document.getElementById('music-bar').classList.remove('paused');
+    document.removeEventListener('click', startMusic);
+  }
+}, { once: false });
+
+function toggleMusic() {
+  if (!ytPlayer) return;
+  if (musicPlaying) {
+    ytPlayer.pauseVideo();
+    musicPlaying = false;
+    document.getElementById('music-bar').classList.add('paused');
+  } else {
+    ytPlayer.playVideo();
+    musicPlaying = true;
+    document.getElementById('music-bar').classList.remove('paused');
+  }
+}
+
+// Init: page1 shown after wish screen — NOT on load
+// (page1 has no 'active' class by default)
+
+// ═══════════════════════════════════════
+// INTRO COUNTDOWN
+// ═══════════════════════════════════════
+(function runCountdown() {
+  const nums  = [5, 4, 3, 2, 1];
+  const numEl = document.getElementById('countdown-num');
+  const dots  = document.querySelectorAll('.intro-dot');
+  const ringColors = [
+    'rgba(233,30,140,0.3)',
+    'rgba(194,24,91,0.3)',
+    'rgba(244,143,177,0.3)',
+    'rgba(233,30,140,0.4)',
+    'rgba(255,128,171,0.45)'
+  ];
+  let idx = 0;
+
+  function showNumber(i) {
+    if (i >= nums.length) { showWish(); return; }
+
+    dots.forEach((d, di) => {
+      d.classList.remove('active', 'done');
+      if (di < i)   d.classList.add('done');
+      if (di === i) d.classList.add('active');
+    });
+
+    document.querySelectorAll('.intro-ring').forEach(r => {
+      r.style.borderColor = ringColors[i];
+    });
+
+    document.getElementById('intro-overlay').style.background =
+      i === nums.length - 1 ? '#2a0015' : '#0d0108';
+
+    // force animation restart via style swap (fixes stuck-at-5 bug)
+    numEl.style.animation = 'none';
+    numEl.textContent = nums[i];
+    numEl.offsetHeight; // trigger reflow
+    numEl.style.animation = 'numSlam 0.55s cubic-bezier(0.22,1,0.36,1) both';
+
+    setTimeout(() => {
+      numEl.style.animation = 'numExit 0.3s ease-in both';
+      setTimeout(() => {
+        idx++;
+        showNumber(idx);
+      }, 320);
+    }, 850);
+  }
+
+  setTimeout(() => showNumber(0), 400);
+})();
+
+function showWish() {
+  document.getElementById('intro-overlay').classList.add('hidden');
+  const ws = document.getElementById('wish-screen');
+  ws.classList.add('show');
+  spawnConfetti();
+  setTimeout(spawnConfetti, 600);
+  setTimeout(spawnConfetti, 1200);
+  setTimeout(spawnConfetti, 1900);
+}
+
+function spawnConfetti() {
+  const ws = document.getElementById('wish-screen');
+  const emojis = ['❤️','🩷','💕','💗','💖','🌸','✨','🎂','🎉','💝'];
+  for (let i = 0; i < 18; i++) {
+    const el = document.createElement('span');
+    el.className = 'confetti-heart';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.top  = '-60px';
+    el.style.fontSize = (0.9 + Math.random() * 1.4) + 'rem';
+    const dur = 2.5 + Math.random() * 3;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay   = Math.random() * 1.2 + 's';
+    ws.appendChild(el);
+    setTimeout(() => el.remove(), (dur + 1.5) * 1000);
+  }
+}
+
+function enterSite() {
+  const ws = document.getElementById('wish-screen');
+  ws.style.transition = 'opacity 0.6s ease';
+  ws.style.opacity = '0';
+  setTimeout(() => {
+    ws.style.display = 'none';
+    document.getElementById('page1').classList.add('active');
+    burstHearts();
+    if (!musicPlaying && ytPlayer && ytPlayer.playVideo) {
+      ytPlayer.playVideo();
+      musicPlaying = true;
+      document.getElementById('music-bar').classList.remove('paused');
+    }
+  }, 600);
+}
+</script>
+</body>
+</html>
